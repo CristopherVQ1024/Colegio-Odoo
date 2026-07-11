@@ -37,6 +37,18 @@
                             <field name="user_id"/>
                         </group>
                     </group>
+                    <notebook>
+                        <page string="Cuotas">
+                            <field name="cuota_ids">
+                                <tree editable="bottom">
+                                    <field name="periodo"/>
+                                    <field name="monto"/>
+                                    <field name="fecha_vencimiento"/>
+                                    <field name="estado"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

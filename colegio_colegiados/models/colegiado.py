@@ -21,3 +21,4 @@ class Colegiado(models.Model):
     ], string='Estado', default='activo', tracking=True)
     especialidad_id = fields.Many2one('colegio.especialidad', string='Especialidad')
     user_id = fields.Many2one('res.users', string='Usuario vinculado')
+    cuota_ids = fields.One2many('colegio.cuota', 'colegiado_id', string='Cuotas')

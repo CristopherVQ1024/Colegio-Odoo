@@ -1,0 +1,62 @@
+<odoo>
+    <record id="view_solicitud_list" model="ir.ui.view">
+        <field name="name">colegio.solicitud.list</field>
+        <field name="model">colegio.solicitud</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="dni"/>
+                <field name="nombres"/>
+                <field name="apellidos"/>
+                <field name="fecha_solicitud"/>
+                <field name="estado"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_solicitud_form" model="ir.ui.view">
+        <field name="name">colegio.solicitud.form</field>
+        <field name="model">colegio.solicitud</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="estado" widget="statusbar" statusbar_visible="pendiente,en_revision,aprobado,rechazado"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="dni"/>
+                            <field name="nombres"/>
+                            <field name="apellidos"/>
+                            <field name="correo"/>
+                            <field name="telefono"/>
+                        </group>
+                        <group>
+                            <field name="fecha_solicitud"/>
+                            <field name="observaciones"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Documentos">
+                            <field name="documento_ids">
+                                <tree editable="bottom">
+                                    <field name="tipo_documento"/>
+                                    <field name="archivo" filename="archivo_nombre"/>
+                                    <field name="archivo_nombre" invisible="1"/>
+                                    <field name="fecha_subida"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_solicitud" model="ir.actions.act_window">
+        <field name="name">Solicitudes de Colegiación</field>
+        <field name="res_model">colegio.solicitud</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_solicitud" name="Solicitudes" parent="menu_colegio_root" action="action_solicitud" sequence="15"/>
+</odoo>

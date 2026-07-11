@@ -7,6 +7,8 @@
     'data': [
         'security/ir.model.access.csv',
         'views/colegiado_views.xml',
+        'views/solicitud_views.xml',
+        'views/cuota_views.xml',
     ],
     'installable': True,
     'application': True,

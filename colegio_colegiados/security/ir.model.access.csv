@@ -1,3 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_colegio_colegiado,colegio.colegiado,model_colegio_colegiado,,1,1,1,1
 access_colegio_especialidad,colegio.especialidad,model_colegio_especialidad,,1,1,1,1
+access_colegio_solicitud,colegio.solicitud,model_colegio_solicitud,,1,1,1,1
+access_colegio_documento,colegio.documento,model_colegio_documento,,1,1,1,1
+access_colegio_cuota,colegio.cuota,model_colegio_cuota,,1,1,1,1
+access_colegio_pago,colegio.pago,model_colegio_pago,,1,1,1,1
