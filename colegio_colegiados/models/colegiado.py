@@ -1,4 +1,5 @@
-from odoo import models, fields
+from odoo import models, fields, api
+from datetime import date
 
 class Colegiado(models.Model):
     _name = 'colegio.colegiado'
@@ -22,3 +23,14 @@ class Colegiado(models.Model):
     especialidad_id = fields.Many2one('colegio.especialidad', string='Especialidad')
     user_id = fields.Many2one('res.users', string='Usuario vinculado')
     cuota_ids = fields.One2many('colegio.cuota', 'colegiado_id', string='Cuotas')
+
+    habilitado = fields.Boolean(string='Habilitado', compute='_compute_habilitado', store=True)
+
+    @api.depends('cuota_ids.estado', 'estado')
+    def _compute_habilitado(self):
+        for rec in self:
+            if rec.estado != 'activo':
+                rec.habilitado = False
+                continue
+            cuotas_vencidas = rec.cuota_ids.filtered(lambda c: c.estado == 'vencido')
+            rec.habilitado = not bool(cuotas_vencidas)

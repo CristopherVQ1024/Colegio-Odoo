@@ -9,6 +9,7 @@
                 <field name="apellidos"/>
                 <field name="especialidad_id"/>
                 <field name="estado"/>
+                <field name="habilitado"/>
             </tree>
         </field>
     </record>
@@ -34,6 +35,7 @@
                             <field name="correo"/>
                             <field name="fecha_colegiacion"/>
                             <field name="estado"/>
+                            <field name="habilitado" widget="boolean_toggle"/>
                             <field name="user_id"/>
                         </group>
                     </group>
