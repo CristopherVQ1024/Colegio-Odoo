@@ -5,14 +5,14 @@
         <field name="name">tombo.comisaria.list</field>
         <field name="model">tombo.comisaria</field>
         <field name="arch" type="xml">
-            <list string="Comisarías" decoration-muted="estado=='inactiva'">
+            <tree string="Comisarías" decoration-muted="estado=='inactiva'">
                 <field name="name"/>
                 <field name="distrito"/>
                 <field name="provincia"/>
                 <field name="telefono"/>
                 <field name="responsable_id"/>
                 <field name="estado" widget="badge" decoration-success="estado=='activa'" decoration-danger="estado=='inactiva'"/>
-            </list>
+            </tree>
         </field>
     </record>
 
@@ -24,7 +24,7 @@
                 <header>
                     <field name="estado" widget="statusbar"/>
                 </header>
-                <sheet>
+                <sheet>                                      
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_policias" type="object" class="oe_stat_button" icon="fa-users">
                             <field name="policia_count" widget="statinfo" string="Policías"/>
@@ -54,23 +54,23 @@
                     <notebook>
                         <page string="Personal Policial">
                             <field name="policia_ids">
-                                <list editable="bottom">
+                                <tree editable="bottom">
                                     <field name="name"/>
                                     <field name="dni"/>
                                     <field name="cargo"/>
                                     <field name="area"/>
                                     <field name="estado"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                         <page string="Recursos Asignados">
-                            <field name="recurso_ids">
-                                <list editable="bottom">
+                            <field name="recurso_ids" context="{'default_comisaria_id': id}">
+                                <tree editable="bottom">
                                     <field name="name"/>
                                     <field name="tipo_recurso"/>
                                     <field name="policia_id"/>
                                     <field name="estado"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                     </notebook>
@@ -102,7 +102,7 @@
     <record id="action_tombo_comisaria" model="ir.actions.act_window">
         <field name="name">Comisarías</field>
         <field name="res_model">tombo.comisaria</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Registra una nueva comisaría</p>
         </field>

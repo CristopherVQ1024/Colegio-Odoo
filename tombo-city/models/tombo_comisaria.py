@@ -46,7 +46,7 @@ class TomboComisaria(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Personal Policial',
             'res_model': 'tombo.policia',
-            'view_mode': 'list,form',
+            'view_mode': 'tree,form',
             'domain': [('comisaria_id', '=', self.id)],
             'context': {'default_comisaria_id': self.id},
         }
@@ -57,7 +57,7 @@ class TomboComisaria(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Recursos Policiales',
             'res_model': 'tombo.recurso',
-            'view_mode': 'list,form',
+            'view_mode': 'tree,form',
             'domain': [('comisaria_id', '=', self.id)],
             'context': {'default_comisaria_id': self.id},
         }
@@ -68,7 +68,7 @@ class TomboComisaria(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Denuncias',
             'res_model': 'tombo.denuncia',
-            'view_mode': 'list,form',
+            'view_mode': 'tree,form',
             'domain': [('comisaria_id', '=', self.id)],
             'context': {'default_comisaria_id': self.id},
         }

@@ -5,7 +5,7 @@
         <field name="name">tombo.policia.list</field>
         <field name="model">tombo.policia</field>
         <field name="arch" type="xml">
-            <list string="Personal Policial" decoration-muted="estado=='inactivo'">
+            <tree string="Personal Policial" decoration-muted="estado=='inactivo'">
                 <field name="name"/>
                 <field name="dni"/>
                 <field name="cargo"/>
@@ -13,7 +13,7 @@
                 <field name="comisaria_id"/>
                 <field name="telefono"/>
                 <field name="estado" widget="badge" decoration-success="estado=='activo'" decoration-warning="estado=='vacaciones'" decoration-danger="estado=='inactivo'"/>
-            </list>
+            </tree>
         </field>
     </record>
 
@@ -79,7 +79,7 @@
     <record id="action_tombo_policia" model="ir.actions.act_window">
         <field name="name">Personal Policial</field>
         <field name="res_model">tombo.policia</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Registra un nuevo policía</p>
         </field>

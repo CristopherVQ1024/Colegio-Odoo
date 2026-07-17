@@ -64,7 +64,7 @@ class TomboPolicia(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Denuncias a cargo',
             'res_model': 'tombo.denuncia',
-            'view_mode': 'list,form',
+            'view_mode': 'tree,form',
             'domain': [('responsable_id', '=', self.id)],
         }
 
@@ -74,7 +74,7 @@ class TomboPolicia(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Recursos Asignados',
             'res_model': 'tombo.recurso',
-            'view_mode': 'list,form',
+            'view_mode': 'tree,form',
             'domain': [('policia_id', '=', self.id)],
         }
 

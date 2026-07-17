@@ -5,7 +5,7 @@
         <field name="name">tombo.incidencia.list</field>
         <field name="model">tombo.incidencia</field>
         <field name="arch" type="xml">
-            <list string="Incidencias Ciudadanas" decoration-muted="estado=='cerrada'" decoration-danger="prioridad=='urgente'">
+            <tree string="Incidencias Ciudadanas" decoration-muted="estado=='cerrada'" decoration-danger="prioridad=='urgente'">
                 <field name="name"/>
                 <field name="fecha_registro"/>
                 <field name="tipo_incidencia"/>
@@ -13,7 +13,7 @@
                 <field name="prioridad" widget="badge" decoration-danger="prioridad=='urgente'" decoration-warning="prioridad=='alta'" decoration-info="prioridad=='media'" decoration-muted="prioridad=='baja'"/>
                 <field name="responsable_id"/>
                 <field name="estado" widget="badge" decoration-info="estado=='registrada'" decoration-warning="estado=='en_proceso'" decoration-success="estado=='resuelta'"/>
-            </list>
+            </tree>
         </field>
     </record>
 
@@ -108,7 +108,7 @@
     <record id="action_tombo_incidencia" model="ir.actions.act_window">
         <field name="name">Incidencias Ciudadanas</field>
         <field name="res_model">tombo.incidencia</field>
-        <field name="view_mode">list,kanban,form</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="context">{'search_default_registradas': 1, 'search_default_en_proceso': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Registra una nueva incidencia ciudadana</p>

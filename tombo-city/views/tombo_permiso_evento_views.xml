@@ -5,14 +5,14 @@
         <field name="name">tombo.permiso.evento.list</field>
         <field name="model">tombo.permiso.evento</field>
         <field name="arch" type="xml">
-            <list string="Permisos para Eventos" decoration-danger="estado=='rechazado'" decoration-success="estado=='aprobado'">
+            <tree string="Permisos para Eventos" decoration-danger="estado=='rechazado'" decoration-success="estado=='aprobado'">
                 <field name="name"/>
                 <field name="organizador_nombre"/>
                 <field name="tipo_evento"/>
                 <field name="fecha_evento"/>
                 <field name="lugar_evento"/>
                 <field name="estado" widget="badge" decoration-info="estado=='solicitado'" decoration-warning="estado=='en_revision'" decoration-success="estado=='aprobado'" decoration-danger="estado=='rechazado'"/>
-            </list>
+            </tree>
         </field>
     </record>
 
@@ -90,7 +90,7 @@
     <record id="action_tombo_permiso_evento" model="ir.actions.act_window">
         <field name="name">Permisos para Eventos</field>
         <field name="res_model">tombo.permiso.evento</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
         <field name="context">{'search_default_solicitados': 1, 'search_default_en_revision': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Registra una solicitud de permiso para evento</p>
