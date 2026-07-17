@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="seq_tombo_denuncia" model="ir.sequence">
+            <field name="name">Tombo City - Denuncia</field>
+            <field name="code">tombo.denuncia</field>
+            <field name="prefix">DEN-%(year)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_tombo_objeto_perdido" model="ir.sequence">
+            <field name="name">Tombo City - Objeto Perdido</field>
+            <field name="code">tombo.objeto.perdido</field>
+            <field name="prefix">OBJ-%(year)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_tombo_permiso_evento" model="ir.sequence">
+            <field name="name">Tombo City - Permiso de Evento</field>
+            <field name="code">tombo.permiso.evento</field>
+            <field name="prefix">PER-%(year)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_tombo_incidencia" model="ir.sequence">
+            <field name="name">Tombo City - Incidencia</field>
+            <field name="code">tombo.incidencia</field>
+            <field name="prefix">INC-%(year)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

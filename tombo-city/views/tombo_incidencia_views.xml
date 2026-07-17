@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_tombo_incidencia_list" model="ir.ui.view">
+        <field name="name">tombo.incidencia.list</field>
+        <field name="model">tombo.incidencia</field>
+        <field name="arch" type="xml">
+            <list string="Incidencias Ciudadanas" decoration-muted="estado=='cerrada'" decoration-danger="prioridad=='urgente'">
+                <field name="name"/>
+                <field name="fecha_registro"/>
+                <field name="tipo_incidencia"/>
+                <field name="ubicacion"/>
+                <field name="prioridad" widget="badge" decoration-danger="prioridad=='urgente'" decoration-warning="prioridad=='alta'" decoration-info="prioridad=='media'" decoration-muted="prioridad=='baja'"/>
+                <field name="responsable_id"/>
+                <field name="estado" widget="badge" decoration-info="estado=='registrada'" decoration-warning="estado=='en_proceso'" decoration-success="estado=='resuelta'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_tombo_incidencia_kanban" model="ir.ui.view">
+        <field name="name">tombo.incidencia.kanban</field>
+        <field name="model">tombo.incidencia</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="estado" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="tipo_incidencia"/>
+                <field name="prioridad"/>
+                <field name="ubicacion"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <strong><field name="name"/></strong>
+                            <div><field name="tipo_incidencia"/></div>
+                            <div class="text-muted"><field name="ubicacion"/></div>
+                            <field name="prioridad" widget="priority" readonly="1"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_tombo_incidencia_form" model="ir.ui.view">
+        <field name="name">tombo.incidencia.form</field>
+        <field name="model">tombo.incidencia</field>
+        <field name="arch" type="xml">
+            <form string="Incidencia Ciudadana">
+                <header>
+                    <button name="action_atender" type="object" string="Atender" class="btn-primary" invisible="estado != 'registrada'"/>
+                    <button name="action_resolver" type="object" string="Marcar Resuelta" class="btn-primary" invisible="estado != 'en_proceso'"/>
+                    <button name="action_cerrar" type="object" string="Cerrar" invisible="estado != 'resuelta'"/>
+                    <button name="action_reabrir" type="object" string="Reabrir" invisible="estado not in ('resuelta','cerrada')"/>
+                    <field name="estado" widget="statusbar" statusbar_visible="registrada,en_proceso,resuelta,cerrada"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Datos del Reporte">
+                            <field name="partner_id"/>
+                            <field name="reportante_nombre"/>
+                            <field name="reportante_telefono"/>
+                            <field name="fecha_registro"/>
+                        </group>
+                        <group string="Datos de la Incidencia">
+                            <field name="tipo_incidencia"/>
+                            <field name="ubicacion"/>
+                            <field name="prioridad" widget="priority"/>
+                            <field name="comisaria_id"/>
+                            <field name="responsable_id"/>
+                            <field name="denuncia_id"/>
+                        </group>
+                    </group>
+                    <group string="Descripción">
+                        <field name="descripcion" nolabel="1"/>
+                    </group>
+                    <group string="Seguimiento">
+                        <field name="seguimiento" nolabel="1" placeholder="Novedades del seguimiento..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tombo_incidencia_search" model="ir.ui.view">
+        <field name="name">tombo.incidencia.search</field>
+        <field name="model">tombo.incidencia</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Incidencias">
+                <field name="name"/>
+                <field name="ubicacion"/>
+                <field name="tipo_incidencia"/>
+                <filter string="Urgentes" name="urgentes" domain="[('prioridad','=','urgente')]"/>
+                <filter string="Registradas" name="registradas" domain="[('estado','=','registrada')]"/>
+                <filter string="En Proceso" name="en_proceso" domain="[('estado','=','en_proceso')]"/>
+                <filter string="Resueltas" name="resueltas" domain="[('estado','=','resuelta')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Tipo" name="group_tipo" context="{'group_by':'tipo_incidencia'}"/>
+                    <filter string="Prioridad" name="group_prioridad" context="{'group_by':'prioridad'}"/>
+                    <filter string="Estado" name="group_estado" context="{'group_by':'estado'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_tombo_incidencia" model="ir.actions.act_window">
+        <field name="name">Incidencias Ciudadanas</field>
+        <field name="res_model">tombo.incidencia</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="context">{'search_default_registradas': 1, 'search_default_en_proceso': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Registra una nueva incidencia ciudadana</p>
+        </field>
+    </record>
+
+</odoo>

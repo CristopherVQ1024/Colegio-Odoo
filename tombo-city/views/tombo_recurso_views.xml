@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_tombo_recurso_list" model="ir.ui.view">
+        <field name="name">tombo.recurso.list</field>
+        <field name="model">tombo.recurso</field>
+        <field name="arch" type="xml">
+            <list string="Recursos Policiales" decoration-muted="estado=='baja'">
+                <field name="name"/>
+                <field name="tipo_recurso"/>
+                <field name="comisaria_id"/>
+                <field name="policia_id"/>
+                <field name="fecha_proximo_mantenimiento"/>
+                <field name="estado" widget="badge" decoration-success="estado=='disponible'" decoration-info="estado=='asignado'" decoration-warning="estado=='mantenimiento'" decoration-danger="estado=='baja'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_tombo_recurso_form" model="ir.ui.view">
+        <field name="name">tombo.recurso.form</field>
+        <field name="model">tombo.recurso</field>
+        <field name="arch" type="xml">
+            <form string="Recurso Policial">
+                <header>
+                    <button name="action_asignar" type="object" string="Asignar" class="btn-primary" invisible="estado in ('asignado','baja')"/>
+                    <button name="action_liberar" type="object" string="Liberar" invisible="estado != 'asignado'"/>
+                    <button name="action_enviar_mantenimiento" type="object" string="Enviar a Mantenimiento" invisible="estado in ('mantenimiento','baja')"/>
+                    <button name="action_dar_de_baja" type="object" string="Dar de Baja" invisible="estado == 'baja'"/>
+                    <field name="estado" widget="statusbar" statusbar_visible="disponible,asignado,mantenimiento"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Código del recurso"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="tipo_recurso"/>
+                            <field name="marca"/>
+                            <field name="numero_serie"/>
+                            <field name="comisaria_id"/>
+                            <field name="policia_id"/>
+                        </group>
+                        <group>
+                            <field name="fecha_adquisicion"/>
+                            <field name="fecha_ultimo_mantenimiento"/>
+                            <field name="fecha_proximo_mantenimiento"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="descripcion" placeholder="Características del recurso..."/>
+                        <field name="observaciones" placeholder="Observaciones..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tombo_recurso_search" model="ir.ui.view">
+        <field name="name">tombo.recurso.search</field>
+        <field name="model">tombo.recurso</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Recursos">
+                <field name="name"/>
+                <field name="comisaria_id"/>
+                <field name="policia_id"/>
+                <filter string="Disponibles" name="disponibles" domain="[('estado','=','disponible')]"/>
+                <filter string="Asignados" name="asignados" domain="[('estado','=','asignado')]"/>
+                <filter string="En Mantenimiento" name="mantenimiento" domain="[('estado','=','mantenimiento')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Tipo de Recurso" name="group_tipo" context="{'group_by':'tipo_recurso'}"/>
+                    <filter string="Comisaría" name="group_comisaria" context="{'group_by':'comisaria_id'}"/>
+                    <filter string="Estado" name="group_estado" context="{'group_by':'estado'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_tombo_recurso" model="ir.actions.act_window">
+        <field name="name">Recursos Policiales</field>
+        <field name="res_model">tombo.recurso</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Registra un nuevo recurso policial</p>
+        </field>
+    </record>
+
+</odoo>

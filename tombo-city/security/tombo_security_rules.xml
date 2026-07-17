@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- ==================================================================
+             ADMINISTRADOR: acceso total (sin restricciones) a todos los modelos
+        =================================================================== -->
+        <record id="rule_denuncia_admin" model="ir.rule">
+            <field name="name">Denuncia: Administrador - acceso total</field>
+            <field name="model_id" ref="model_tombo_denuncia"/>
+            <field name="groups" eval="[(4, ref('group_tombo_administrador'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <!-- ==================================================================
+             PERSONAL DE COMISARÍA y COMISARIO: ven todos los registros
+             (institución completa). Se podría restringir por comisaria_id
+             asignada al usuario si se requiere en el futuro.
+        =================================================================== -->
+        <record id="rule_denuncia_interno" model="ir.rule">
+            <field name="name">Denuncia: Personal interno - acceso total</field>
+            <field name="model_id" ref="model_tombo_denuncia"/>
+            <field name="groups" eval="[(4, ref('group_tombo_personal_comisaria')), (4, ref('group_tombo_comisario'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="rule_incidencia_interno" model="ir.rule">
+            <field name="name">Incidencia: Personal interno - acceso total</field>
+            <field name="model_id" ref="model_tombo_incidencia"/>
+            <field name="groups" eval="[(4, ref('group_tombo_personal_comisaria')), (4, ref('group_tombo_comisario')), (4, ref('group_tombo_administrador'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="rule_permiso_evento_interno" model="ir.rule">
+            <field name="name">Permiso Evento: Personal interno - acceso total</field>
+            <field name="model_id" ref="model_tombo_permiso_evento"/>
+            <field name="groups" eval="[(4, ref('group_tombo_personal_comisaria')), (4, ref('group_tombo_comisario')), (4, ref('group_tombo_administrador'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="rule_objeto_perdido_interno" model="ir.rule">
+            <field name="name">Objeto Perdido: Personal interno - acceso total</field>
+            <field name="model_id" ref="model_tombo_objeto_perdido"/>
+            <field name="groups" eval="[(4, ref('group_tombo_personal_comisaria')), (4, ref('group_tombo_comisario')), (4, ref('group_tombo_administrador'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <!-- ==================================================================
+             CIUDADANO (portal): solo ve/crea sus propios trámites
+        =================================================================== -->
+        <record id="rule_denuncia_portal" model="ir.rule">
+            <field name="name">Denuncia: Ciudadano - solo sus propios registros</field>
+            <field name="model_id" ref="model_tombo_denuncia"/>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="domain_force">['|', ('partner_id', '=', user.partner_id.id), ('create_uid', '=', user.id)]</field>
+        </record>
+
+        <record id="rule_incidencia_portal" model="ir.rule">
+            <field name="name">Incidencia: Ciudadano - solo sus propios registros</field>
+            <field name="model_id" ref="model_tombo_incidencia"/>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="domain_force">['|', ('partner_id', '=', user.partner_id.id), ('create_uid', '=', user.id)]</field>
+        </record>
+
+        <record id="rule_permiso_evento_portal" model="ir.rule">
+            <field name="name">Permiso Evento: Ciudadano - solo sus propios registros</field>
+            <field name="model_id" ref="model_tombo_permiso_evento"/>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="domain_force">['|', ('partner_id', '=', user.partner_id.id), ('create_uid', '=', user.id)]</field>
+        </record>
+
+        <record id="rule_objeto_perdido_portal" model="ir.rule">
+            <field name="name">Objeto Perdido: Ciudadano - solo lectura de todos (consulta pública)</field>
+            <field name="model_id" ref="model_tombo_objeto_perdido"/>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">0</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+        </record>
+
+    </data>
+</odoo>

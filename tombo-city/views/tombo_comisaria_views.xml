@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_tombo_comisaria_list" model="ir.ui.view">
+        <field name="name">tombo.comisaria.list</field>
+        <field name="model">tombo.comisaria</field>
+        <field name="arch" type="xml">
+            <list string="Comisarías" decoration-muted="estado=='inactiva'">
+                <field name="name"/>
+                <field name="distrito"/>
+                <field name="provincia"/>
+                <field name="telefono"/>
+                <field name="responsable_id"/>
+                <field name="estado" widget="badge" decoration-success="estado=='activa'" decoration-danger="estado=='inactiva'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_tombo_comisaria_form" model="ir.ui.view">
+        <field name="name">tombo.comisaria.form</field>
+        <field name="model">tombo.comisaria</field>
+        <field name="arch" type="xml">
+            <form string="Comisaría">
+                <header>
+                    <field name="estado" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_policias" type="object" class="oe_stat_button" icon="fa-users">
+                            <field name="policia_count" widget="statinfo" string="Policías"/>
+                        </button>
+                        <button name="action_view_recursos" type="object" class="oe_stat_button" icon="fa-car">
+                            <field name="recurso_count" widget="statinfo" string="Recursos"/>
+                        </button>
+                        <button name="action_view_denuncias" type="object" class="oe_stat_button" icon="fa-file-text">
+                            <field name="denuncia_count" widget="statinfo" string="Denuncias"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Nombre de la comisaría"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="direccion"/>
+                            <field name="distrito"/>
+                            <field name="provincia"/>
+                        </group>
+                        <group>
+                            <field name="telefono"/>
+                            <field name="email"/>
+                            <field name="responsable_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Personal Policial">
+                            <field name="policia_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="dni"/>
+                                    <field name="cargo"/>
+                                    <field name="area"/>
+                                    <field name="estado"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Recursos Asignados">
+                            <field name="recurso_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="tipo_recurso"/>
+                                    <field name="policia_id"/>
+                                    <field name="estado"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tombo_comisaria_search" model="ir.ui.view">
+        <field name="name">tombo.comisaria.search</field>
+        <field name="model">tombo.comisaria</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Comisarías">
+                <field name="name"/>
+                <field name="distrito"/>
+                <field name="provincia"/>
+                <filter string="Activas" name="activas" domain="[('estado','=','activa')]"/>
+                <filter string="Inactivas" name="inactivas" domain="[('estado','=','inactiva')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Distrito" name="group_distrito" context="{'group_by':'distrito'}"/>
+                    <filter string="Provincia" name="group_provincia" context="{'group_by':'provincia'}"/>
+                    <filter string="Estado" name="group_estado" context="{'group_by':'estado'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_tombo_comisaria" model="ir.actions.act_window">
+        <field name="name">Comisarías</field>
+        <field name="res_model">tombo.comisaria</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Registra una nueva comisaría</p>
+        </field>
+    </record>
+
+</odoo>

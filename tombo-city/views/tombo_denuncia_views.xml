@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_tombo_denuncia_list" model="ir.ui.view">
+        <field name="name">tombo.denuncia.list</field>
+        <field name="model">tombo.denuncia</field>
+        <field name="arch" type="xml">
+            <list string="Denuncias" decoration-muted="estado=='archivada'" decoration-success="estado=='resuelta'" decoration-warning="estado=='investigacion'">
+                <field name="name"/>
+                <field name="fecha_registro"/>
+                <field name="denunciante_nombre"/>
+                <field name="tipo_denuncia"/>
+                <field name="comisaria_id"/>
+                <field name="responsable_id"/>
+                <field name="estado" widget="badge" decoration-info="estado=='registrada'" decoration-warning="estado=='investigacion'" decoration-success="estado=='resuelta'" decoration-muted="estado=='archivada'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_tombo_denuncia_kanban" model="ir.ui.view">
+        <field name="name">tombo.denuncia.kanban</field>
+        <field name="model">tombo.denuncia</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="estado" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="denunciante_nombre"/>
+                <field name="tipo_denuncia"/>
+                <field name="estado"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <strong><field name="name"/></strong>
+                            <div><field name="denunciante_nombre"/></div>
+                            <div class="text-muted"><field name="tipo_denuncia"/></div>
+                            <div><field name="responsable_id" widget="many2one_avatar"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_tombo_denuncia_form" model="ir.ui.view">
+        <field name="name">tombo.denuncia.form</field>
+        <field name="model">tombo.denuncia</field>
+        <field name="arch" type="xml">
+            <form string="Denuncia">
+                <header>
+                    <button name="action_iniciar_investigacion" type="object" string="Iniciar Investigación" class="btn-primary" invisible="estado != 'registrada'"/>
+                    <button name="action_resolver" type="object" string="Marcar como Resuelta" class="btn-primary" invisible="estado != 'investigacion'"/>
+                    <button name="action_archivar" type="object" string="Archivar" invisible="estado not in ('registrada','investigacion','resuelta')"/>
+                    <button name="action_reabrir" type="object" string="Reabrir" invisible="estado != 'archivada'"/>
+                    <field name="estado" widget="statusbar" statusbar_visible="registrada,investigacion,resuelta"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Datos del Denunciante">
+                            <field name="partner_id"/>
+                            <field name="denunciante_nombre"/>
+                            <field name="denunciante_dni"/>
+                            <field name="denunciante_telefono"/>
+                            <field name="denunciante_email"/>
+                            <field name="denunciante_direccion"/>
+                        </group>
+                        <group string="Datos de la Denuncia">
+                            <field name="tipo_denuncia"/>
+                            <field name="fecha_registro"/>
+                            <field name="fecha_hechos"/>
+                            <field name="lugar_hechos"/>
+                            <field name="comisaria_id"/>
+                            <field name="responsable_id"/>
+                        </group>
+                    </group>
+                    <group string="Descripción">
+                        <field name="descripcion" nolabel="1" placeholder="Describa detalladamente los hechos denunciados..."/>
+                    </group>
+                    <group string="Evidencias (opcional)">
+                        <field name="evidencia_ids" widget="many2many_binary" nolabel="1"/>
+                    </group>
+                    <group string="Seguimiento / Investigación">
+                        <field name="observaciones" nolabel="1" placeholder="Notas de la investigación..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tombo_denuncia_search" model="ir.ui.view">
+        <field name="name">tombo.denuncia.search</field>
+        <field name="model">tombo.denuncia</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Denuncias">
+                <field name="name"/>
+                <field name="denunciante_nombre"/>
+                <field name="denunciante_dni"/>
+                <field name="tipo_denuncia"/>
+                <field name="responsable_id"/>
+                <field name="comisaria_id"/>
+                <filter string="Registradas" name="registradas" domain="[('estado','=','registrada')]"/>
+                <filter string="En Investigación" name="investigacion" domain="[('estado','=','investigacion')]"/>
+                <filter string="Resueltas" name="resueltas" domain="[('estado','=','resuelta')]"/>
+                <filter string="Archivadas" name="archivadas" domain="[('estado','=','archivada')]"/>
+                <filter string="Mis Denuncias Asignadas" name="mis_asignadas" domain="[('responsable_id.user_id', '=', uid)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Estado" name="group_estado" context="{'group_by':'estado'}"/>
+                    <filter string="Tipo de Denuncia" name="group_tipo" context="{'group_by':'tipo_denuncia'}"/>
+                    <filter string="Comisaría" name="group_comisaria" context="{'group_by':'comisaria_id'}"/>
+                    <filter string="Responsable" name="group_responsable" context="{'group_by':'responsable_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_tombo_denuncia" model="ir.actions.act_window">
+        <field name="name">Denuncias</field>
+        <field name="res_model">tombo.denuncia</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="context">{'search_default_registradas': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Registra una nueva denuncia</p>
+        </field>
+    </record>
+
+</odoo>

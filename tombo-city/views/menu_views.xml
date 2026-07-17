@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_tombo_root" name="Tombo City" sequence="10" web_icon="tombo_city,static/description/icon.png"/>
+
+    <!-- Operación diaria -->
+    <menuitem id="menu_tombo_denuncias" name="Denuncias" parent="menu_tombo_root" action="action_tombo_denuncia" sequence="10"/>
+    <menuitem id="menu_tombo_incidencias" name="Incidencias" parent="menu_tombo_root" action="action_tombo_incidencia" sequence="20"/>
+    <menuitem id="menu_tombo_objetos_perdidos" name="Objetos Perdidos" parent="menu_tombo_root" action="action_tombo_objeto_perdido" sequence="30"/>
+    <menuitem id="menu_tombo_permisos_evento" name="Permisos de Eventos" parent="menu_tombo_root" action="action_tombo_permiso_evento" sequence="40"/>
+
+    <!-- Administración -->
+    <menuitem id="menu_tombo_administracion" name="Administración" parent="menu_tombo_root" sequence="50"
+              groups="tombo_city.group_tombo_administrador,tombo_city.group_tombo_comisario"/>
+    <menuitem id="menu_tombo_comisarias" name="Comisarías" parent="menu_tombo_administracion" action="action_tombo_comisaria" sequence="10"/>
+    <menuitem id="menu_tombo_policias" name="Personal Policial" parent="menu_tombo_administracion" action="action_tombo_policia" sequence="20"/>
+    <menuitem id="menu_tombo_recursos" name="Recursos Policiales" parent="menu_tombo_administracion" action="action_tombo_recurso" sequence="30"/>
+
+</odoo>

@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============ Home portal: tarjetas de acceso ============ -->
+    <template id="portal_my_home_tombo" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Mis Denuncias</t>
+                <t t-set="url" t-value="'/my/denuncias'"/>
+                <t t-set="count" t-value="denuncia_count"/>
+            </t>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Mis Incidencias</t>
+                <t t-set="url" t-value="'/my/incidencias'"/>
+                <t t-set="count" t-value="incidencia_count"/>
+            </t>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Mis Permisos de Evento</t>
+                <t t-set="url" t-value="'/my/permisos'"/>
+                <t t-set="count" t-value="permiso_count"/>
+            </t>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Objetos Perdidos</t>
+                <t t-set="url" t-value="'/my/objetos-perdidos'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- ============ DENUNCIAS: listado ============ -->
+    <template id="portal_my_denuncias" name="Mis Denuncias">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <div class="o_portal_my_doc_table">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3>Mis Denuncias</h3>
+                    <a href="/my/denuncias/nueva" class="btn btn-primary">Registrar nueva denuncia</a>
+                </div>
+                <table class="table table-hover o_portal_my_doc_table" t-if="denuncias">
+                    <thead>
+                        <tr class="active">
+                            <th>Código</th>
+                            <th>Fecha</th>
+                            <th>Tipo</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="denuncias" t-as="d">
+                            <td><a t-attf-href="/my/denuncias/#{d.id}"><t t-esc="d.name"/></a></td>
+                            <td><span t-field="d.fecha_registro"/></td>
+                            <td><span t-field="d.tipo_denuncia"/></td>
+                            <td><span t-field="d.estado"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p t-if="not denuncias">Aún no has registrado ninguna denuncia.</p>
+                <t t-call="portal.pager"/>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_denuncia_form" name="Nueva Denuncia">
+        <t t-call="portal.portal_layout">
+            <div class="o_portal_my_doc_table">
+                <h3>Registrar una nueva denuncia</h3>
+                <form action="/my/denuncias/nueva" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label>Nombre del denunciante</label>
+                            <input type="text" name="denunciante_nombre" class="form-control"/>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label>DNI / Documento</label>
+                            <input type="text" name="denunciante_dni" class="form-control"/>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label>Teléfono</label>
+                            <input type="text" name="denunciante_telefono" class="form-control"/>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label>Correo electrónico</label>
+                            <input type="email" name="denunciante_email" class="form-control"/>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <label>Dirección</label>
+                            <input type="text" name="denunciante_direccion" class="form-control"/>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label>Tipo de denuncia</label>
+                            <select name="tipo_denuncia" class="form-control">
+                                <option value="robo">Robo</option>
+                                <option value="hurto">Hurto</option>
+                                <option value="violencia_familiar">Violencia Familiar</option>
+                                <option value="agresion">Agresión / Lesiones</option>
+                                <option value="estafa">Estafa</option>
+                                <option value="vandalismo">Vandalismo</option>
+                                <option value="amenaza">Amenazas</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label>Lugar de los hechos</label>
+                            <input type="text" name="lugar_hechos" class="form-control"/>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <label>Descripción de los hechos</label>
+                            <textarea name="descripcion" class="form-control" rows="5" required="required"/>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">Enviar denuncia</button>
+                    <a href="/my/denuncias" class="btn btn-secondary mt-2">Cancelar</a>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_denuncia_detail" name="Detalle de Denuncia">
+        <t t-call="portal.portal_layout">
+            <div class="o_portal_my_doc_table">
+                <h3>Denuncia <span t-field="denuncia.name"/></h3>
+                <p><strong>Estado:</strong> <span t-field="denuncia.estado"/></p>
+                <p><strong>Tipo:</strong> <span t-field="denuncia.tipo_denuncia"/></p>
+                <p><strong>Fecha de registro:</strong> <span t-field="denuncia.fecha_registro"/></p>
+                <p><strong>Descripción:</strong></p>
+                <p><span t-field="denuncia.descripcion"/></p>
+                <a href="/my/denuncias" class="btn btn-secondary">Volver</a>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============ INCIDENCIAS: listado ============ -->
+    <template id="portal_my_incidencias" name="Mis Incidencias">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <div class="o_portal_my_doc_table">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3>Mis Incidencias</h3>
+                    <a href="/my/incidencias/nueva" class="btn btn-primary">Reportar nueva incidencia</a>
+                </div>
+                <table class="table table-hover o_portal_my_doc_table" t-if="incidencias">
+                    <thead>
+                        <tr class="active">
+                            <th>Código</th>
+                            <th>Tipo</th>
+                            <th>Ubicación</th>
+                            <th>Prioridad</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="incidencias" t-as="i">
+                            <td><a t-attf-href="/my/incidencias/#{i.id}"><t t-esc="i.name"/></a></td>
+                            <td><span t-field="i.tipo_incidencia"/></td>
+                            <td><span t-field="i.ubicacion"/></td>
+                            <td><span t-field="i.prioridad"/></td>
+                            <td><span t-field="i.estado"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p t-if="not incidencias">Aún no has reportado ninguna incidencia.</p>
+                <t t-call="portal.pager"/>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_incidencia_form" name="Nueva Incidencia">
+        <t t-call="portal.portal_layout">
+            <div class="o_portal_my_doc_table">
+                <h3>Reportar una incidencia</h3>
+                <form action="/my/incidencias/nueva" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label>Nombre de quien reporta</label>
+                            <input type="text" name="reportante_nombre" class="form-control"/>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label>Teléfono de contacto</label>
+                            <input type="text" name="reportante_telefono" class="form-control"/>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label>Tipo de incidencia</label>
+                            <select name="tipo_incidencia" class="form-control">
+                                <option value="ruido">Ruido Excesivo</option>
+                                <option value="vehiculo_abandonado">Vehículo Abandonado</option>
+                                <option value="alumbrado">Alumbrado Público Dañado</option>
+                                <option value="sospechoso">Persona Sospechosa</option>
+                                <option value="disturbios">Disturbios</option>
+                                <option value="emergencia_menor">Emergencia Menor</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label>Ubicación</label>
+                            <input type="text" name="ubicacion" class="form-control" required="required"/>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <label>Descripción</label>
+                            <textarea name="descripcion" class="form-control" rows="5"/>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">Enviar reporte</button>
+                    <a href="/my/incidencias" class="btn btn-secondary mt-2">Cancelar</a>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_incidencia_detail" name="Detalle de Incidencia">
+        <t t-call="portal.portal_layout">
+            <div class="o_portal_my_doc_table">
+                <h3>Incidencia <span t-field="incidencia.name"/></h3>
+                <p><strong>Estado:</strong> <span t-field="incidencia.estado"/></p>
+                <p><strong>Tipo:</strong> <span t-field="incidencia.tipo_incidencia"/></p>
+                <p><strong>Ubicación:</strong> <span t-field="incidencia.ubicacion"/></p>
+                <p><strong>Descripción:</strong></p>
+                <p><span t-field="incidencia.descripcion"/></p>
+                <a href="/my/incidencias" class="btn btn-secondary">Volver</a>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============ PERMISOS DE EVENTO: listado ============ -->
+    <template id="portal_my_permisos" name="Mis Permisos de Evento">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <div class="o_portal_my_doc_table">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3>Mis Permisos de Evento</h3>
+                    <a href="/my/permisos/nuevo" class="btn btn-primary">Solicitar nuevo permiso</a>
+                </div>
+                <table class="table table-hover o_portal_my_doc_table" t-if="permisos">
+                    <thead>
+                        <tr class="active">
+                            <th>Código</th>
+                            <th>Evento</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="permisos" t-as="p">
+                            <td><a t-attf-href="/my/permisos/#{p.id}"><t t-esc="p.name"/></a></td>
+                            <td><span t-field="p.tipo_evento"/></td>
+                            <td><span t-field="p.fecha_evento"/></td>
+                            <td><span t-field="p.estado"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p t-if="not permisos">Aún no has solicitado ningún permiso de evento.</p>
+                <t t-call="portal.pager"/>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_permiso_form" name="Nueva Solicitud de Permiso">
+        <t t-call="portal.portal_layout">
+            <div class="o_portal_my_doc_table">
+                <h3>Solicitar permiso para evento</h3>
+                <form action="/my/permisos/nuevo" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label>Nombre del organizador</label>
+                            <input type="text" name="organizador_nombre" class="form-control"/>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label>DNI / RUC</label>
+                            <input type="text" name="organizador_dni" class="form-control"/>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label>Teléfono</label>
+                            <input type="text" name="organizador_telefono" class="form-control"/>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label>Correo electrónico</label>
+                            <input type="email" name="organizador_email" class="form-control"/>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label>Tipo de evento</label>
+                            <select name="tipo_evento" class="form-control">
+                                <option value="cultural">Cultural</option>
+                                <option value="deportivo">Deportivo</option>
+                                <option value="religioso">Religioso</option>
+                                <option value="comercial">Comercial / Feria</option>
+                                <option value="social">Social / Fiesta</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label>Fecha y hora del evento</label>
+                            <input type="datetime-local" name="fecha_evento" class="form-control"/>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <label>Lugar del evento</label>
+                            <input type="text" name="lugar_evento" class="form-control" required="required"/>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <label>Descripción del evento</label>
+                            <textarea name="descripcion" class="form-control" rows="4"/>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">Enviar solicitud</button>
+                    <a href="/my/permisos" class="btn btn-secondary mt-2">Cancelar</a>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_permiso_detail" name="Detalle de Permiso">
+        <t t-call="portal.portal_layout">
+            <div class="o_portal_my_doc_table">
+                <h3>Permiso <span t-field="permiso.name"/></h3>
+                <p><strong>Estado:</strong> <span t-field="permiso.estado"/></p>
+                <p><strong>Tipo de evento:</strong> <span t-field="permiso.tipo_evento"/></p>
+                <p><strong>Fecha:</strong> <span t-field="permiso.fecha_evento"/></p>
+                <p><strong>Lugar:</strong> <span t-field="permiso.lugar_evento"/></p>
+                <p t-if="permiso.motivo_rechazo"><strong>Motivo de rechazo:</strong> <span t-field="permiso.motivo_rechazo"/></p>
+                <a href="/my/permisos" class="btn btn-secondary">Volver</a>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============ OBJETOS PERDIDOS: consulta pública ============ -->
+    <template id="portal_objetos_perdidos" name="Objetos Perdidos">
+        <t t-call="portal.portal_layout">
+            <div class="o_portal_my_doc_table">
+                <h3>Objetos Perdidos en Custodia</h3>
+                <form method="get" class="mb-3">
+                    <input type="text" name="search" t-att-value="search" placeholder="Buscar por descripción..." class="form-control d-inline-block" style="width: 300px;"/>
+                    <button type="submit" class="btn btn-secondary">Buscar</button>
+                </form>
+                <table class="table table-hover o_portal_my_doc_table" t-if="objetos">
+                    <thead>
+                        <tr class="active">
+                            <th>Código</th>
+                            <th>Descripción</th>
+                            <th>Lugar de hallazgo</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="objetos" t-as="o">
+                            <td><span t-field="o.name"/></td>
+                            <td><span t-field="o.descripcion"/></td>
+                            <td><span t-field="o.lugar_hallazgo"/></td>
+                            <td><span t-field="o.fecha_hallazgo"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p t-if="not objetos">No hay objetos en custodia que coincidan con la búsqueda.</p>
+                <t t-call="portal.pager"/>
+                <p class="text-muted mt-3">Si reconoces un objeto, acércate a la comisaría correspondiente con un documento de identidad para reclamarlo.</p>
+            </div>
+        </t>
+    </template>
+
+</odoo>
