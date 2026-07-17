@@ -4,25 +4,38 @@
     <!-- ============ Home portal: tarjetas de acceso ============ -->
     <template id="portal_my_home_tombo" inherit_id="portal.portal_my_home">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
-            <t t-call="portal.portal_docs_entry">
-                <t t-set="title">Mis Denuncias</t>
-                <t t-set="url" t-value="'/my/denuncias'"/>
-                <t t-set="count" t-value="denuncia_count"/>
-            </t>
-            <t t-call="portal.portal_docs_entry">
-                <t t-set="title">Mis Incidencias</t>
-                <t t-set="url" t-value="'/my/incidencias'"/>
-                <t t-set="count" t-value="incidencia_count"/>
-            </t>
-            <t t-call="portal.portal_docs_entry">
-                <t t-set="title">Mis Permisos de Evento</t>
-                <t t-set="url" t-value="'/my/permisos'"/>
-                <t t-set="count" t-value="permiso_count"/>
-            </t>
-            <t t-call="portal.portal_docs_entry">
-                <t t-set="title">Objetos Perdidos</t>
-                <t t-set="url" t-value="'/my/objetos-perdidos'"/>
-            </t>
+            <div class="o_portal_index_card col-md-6 order-2">
+                <a href="/my/denuncias" title="Mis Denuncias" class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset text-bg-light">
+                    <div>
+                        <h5 class="mt-0 mb-1"><span>Mis Denuncias</span></h5>
+                        <p class="m-0 text-600"><t t-esc="denuncia_count"/> registradas</p>
+                    </div>
+                </a>
+            </div>
+            <div class="o_portal_index_card col-md-6 order-2">
+                <a href="/my/incidencias" title="Mis Incidencias" class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset text-bg-light">
+                    <div>
+                        <h5 class="mt-0 mb-1"><span>Mis Incidencias</span></h5>
+                        <p class="m-0 text-600"><t t-esc="incidencia_count"/> reportadas</p>
+                    </div>
+                </a>
+            </div>
+            <div class="o_portal_index_card col-md-6 order-2">
+                <a href="/my/permisos" title="Mis Permisos de Evento" class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset text-bg-light">
+                    <div>
+                        <h5 class="mt-0 mb-1"><span>Mis Permisos de Evento</span></h5>
+                        <p class="m-0 text-600"><t t-esc="permiso_count"/> solicitados</p>
+                    </div>
+                </a>
+            </div>
+            <div class="o_portal_index_card col-md-6 order-2">
+                <a href="/my/objetos-perdidos" title="Objetos Perdidos" class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset text-bg-light">
+                    <div>
+                        <h5 class="mt-0 mb-1"><span>Objetos Perdidos</span></h5>
+                        <p class="m-0 text-600">Consultar en custodia</p>
+                    </div>
+                </a>
+            </div>
         </xpath>
     </template>
 

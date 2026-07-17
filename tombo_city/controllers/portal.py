@@ -9,15 +9,12 @@ class TomboCustomerPortal(CustomerPortal):
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
         partner = request.env.user.partner_id
-        if 'denuncia_count' in counters:
-            values['denuncia_count'] = request.env['tombo.denuncia'].search_count(
-                [('partner_id', '=', partner.id)])
-        if 'incidencia_count' in counters:
-            values['incidencia_count'] = request.env['tombo.incidencia'].search_count(
-                [('partner_id', '=', partner.id)])
-        if 'permiso_count' in counters:
-            values['permiso_count'] = request.env['tombo.permiso.evento'].search_count(
-                [('partner_id', '=', partner.id)])
+        values['denuncia_count'] = request.env['tombo.denuncia'].search_count(
+            [('partner_id', '=', partner.id)])
+        values['incidencia_count'] = request.env['tombo.incidencia'].search_count(
+            [('partner_id', '=', partner.id)])
+        values['permiso_count'] = request.env['tombo.permiso.evento'].search_count(
+            [('partner_id', '=', partner.id)])
         return values
 
     # ------------------------------------------------------------------
