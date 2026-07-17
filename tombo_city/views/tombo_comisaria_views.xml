@@ -68,6 +68,7 @@
                                 <tree editable="bottom">
                                     <field name="name"/>
                                     <field name="tipo_recurso"/>
+                                    <field name="comisaria_id" column_invisible="1"/>
                                     <field name="policia_id"/>
                                     <field name="estado"/>
                                 </tree>

@@ -34,9 +34,9 @@ class TomboRecurso(models.Model):
     comisaria_id = fields.Many2one('tombo.comisaria', string='Comisaría', required=True)
     
     policia_id = fields.Many2one(
-        'tombo.policia', 
+        'tombo.policia',
         string='Asignado a',
-        domain="[('comisaria_id', '=', context.get('default_comisaria_id', 0))]", 
+        domain="[('comisaria_id', '=', comisaria_id)]",
         tracking=True
     )
 
