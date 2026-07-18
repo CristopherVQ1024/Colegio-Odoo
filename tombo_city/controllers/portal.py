@@ -49,10 +49,12 @@ class TomboCustomerPortal(CustomerPortal):
                 'tipo_denuncia': post.get('tipo_denuncia'),
                 'lugar_hechos': post.get('lugar_hechos'),
                 'descripcion': post.get('descripcion'),
+                'comisaria_id': int(post.get('comisaria_id')) if post.get('comisaria_id') else False,
             }
             denuncia = request.env['tombo.denuncia'].sudo().create(vals)
             return request.redirect('/my/denuncias/%s' % denuncia.id)
-        return request.render('tombo_city.portal_denuncia_form', {})
+        comisarias = request.env['tombo.comisaria'].sudo().search([('estado', '=', 'activa')])
+        return request.render('tombo_city.portal_denuncia_form', {'comisarias': comisarias})
 
     @http.route(['/my/denuncias/<int:denuncia_id>'], type='http', auth='user', website=True)
     def portal_denuncia_detail(self, denuncia_id, **kw):
@@ -92,10 +94,12 @@ class TomboCustomerPortal(CustomerPortal):
                 'tipo_incidencia': post.get('tipo_incidencia'),
                 'ubicacion': post.get('ubicacion'),
                 'descripcion': post.get('descripcion'),
+                'comisaria_id': int(post.get('comisaria_id')) if post.get('comisaria_id') else False,
             }
             incidencia = request.env['tombo.incidencia'].sudo().create(vals)
             return request.redirect('/my/incidencias/%s' % incidencia.id)
-        return request.render('tombo_city.portal_incidencia_form', {})
+        comisarias = request.env['tombo.comisaria'].sudo().search([('estado', '=', 'activa')])
+        return request.render('tombo_city.portal_incidencia_form', {'comisarias': comisarias})
 
     @http.route(['/my/incidencias/<int:incidencia_id>'], type='http', auth='user', website=True)
     def portal_incidencia_detail(self, incidencia_id, **kw):
@@ -138,10 +142,12 @@ class TomboCustomerPortal(CustomerPortal):
                 'fecha_evento': post.get('fecha_evento'),
                 'lugar_evento': post.get('lugar_evento'),
                 'descripcion': post.get('descripcion'),
+                'comisaria_id': int(post.get('comisaria_id')) if post.get('comisaria_id') else False,
             }
             permiso = request.env['tombo.permiso.evento'].sudo().create(vals)
             return request.redirect('/my/permisos/%s' % permiso.id)
-        return request.render('tombo_city.portal_permiso_form', {})
+        comisarias = request.env['tombo.comisaria'].sudo().search([('estado', '=', 'activa')])
+        return request.render('tombo_city.portal_permiso_form', {'comisarias': comisarias})
 
     @http.route(['/my/permisos/<int:permiso_id>'], type='http', auth='user', website=True)
     def portal_permiso_detail(self, permiso_id, **kw):
